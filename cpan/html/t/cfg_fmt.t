@@ -62,7 +62,7 @@ sub run_one_test {
     print {$cfg_fh} ${$config_ref};
     close $cfg_fh;
     my $output = Marpa::R3::HTML::Test::Util::run_command(
-        File::Spec->catfile( $script_dir, 'marpa_r2_html_fmt' ),
+        File::Spec->catfile( $script_dir, 'marpa_r3_html_fmt' ),
         '--no-added-tag',
         '--compile=' . $test_config_name,
         $html_file_name

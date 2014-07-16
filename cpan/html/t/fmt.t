@@ -49,7 +49,7 @@ my @data_dir   = qw( html t fmt_t_data );
 for my $test (qw(1 2)) {
     my $expected;
     my $output = Marpa::R3::HTML::Test::Util::run_command(
-        File::Spec->catfile( $script_dir, 'marpa_r2_html_fmt' ),
+        File::Spec->catfile( $script_dir, 'marpa_r3_html_fmt' ),
         File::Spec->catfile( @data_dir, ( 'input' . $test . '.html' ) )
     );
     local $RS = undef;
@@ -57,6 +57,6 @@ for my $test (qw(1 2)) {
         File::Spec->catfile( @data_dir, ( 'expected' . $test . '.html' ) );
     $expected = <$fh>;
     close $fh;
-    Marpa::R3::Test::is( $output, $expected, 'marpa_r2_html_fmt test' );
+    Marpa::R3::Test::is( $output, $expected, 'marpa_r3_html_fmt test' );
 } ## end for my $test (qw(1 2))
 

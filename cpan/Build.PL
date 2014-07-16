@@ -141,7 +141,7 @@ my $build = Marpa::R3::Build_Me->new(
     add_to_cleanup     => \@files_to_cleanup,
     module_name        => 'Marpa::R3',
     dist_author        => 'Jeffrey Kegler',
-    dist_abstract      => 'Release 2 of Marpa',
+    dist_abstract      => 'Release 3 of Marpa',
     recommends         => \%recommends,
     requires           => \%requires,
     configure_requires => \%configure_requires,
@@ -149,8 +149,8 @@ my $build = Marpa::R3::Build_Me->new(
     PL_files           => {},
     pm_files           => \%pm_files,
     script_files       => [
-        'html/script/marpa_r2_html_fmt',
-        'html/script/marpa_r2_html_score',
+        'html/script/marpa_r3_html_fmt',
+        'html/script/marpa_r3_html_score',
     ],
     xs_files => { 'xs/R3.xs' => 'lib/Marpa/R3.xs' },
     meta_add => {
