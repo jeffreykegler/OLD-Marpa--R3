@@ -144,6 +144,10 @@ require Marpa::R3::ASF;
 ( $version_result = version_ok($Marpa::R3::ASF::VERSION) )
     and die 'Marpa::R3::ASF::VERSION ', $version_result;
 
+require Marpa::R3::Stuifzand;
+( $version_result = version_ok($Marpa::R3::Stuifzand::VERSION) )
+    and die 'Marpa::R3::Stuifzand::VERSION ', $version_result;
+
 sub Marpa::R3::exception {
     my $exception = join q{}, @_;
     $exception =~ s/ \n* \z /\n/xms;
