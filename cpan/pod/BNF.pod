@@ -1,32 +1,32 @@
 # Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
 =head1 Name
 
-Marpa::R2::BNF - BNF Interface (obsoleted)
+Marpa::R3::BNF - BNF Interface (obsoleted)
 
 =head1 Synopsis
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Stuifzand Synopsis
 partial: 1
 normalize-whitespace: 1
 
-    use Marpa::R2;
+    use Marpa::R3;
 
-    my $grammar = Marpa::R2::Grammar->new(
+    my $grammar = Marpa::R3::Grammar->new(
         {   
             actions        => 'My_Actions',
             default_action => 'do_first_arg',
@@ -45,7 +45,7 @@ normalize-whitespace: 1
         }
     );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 =head1 Overview
 
@@ -53,7 +53,7 @@ This page is the reference for the Marpa's "BNF interface",
 also called its "Stuifzand interface".
 Use of the Stuifzand interface is now discouraged,
 in favor of L<the SLIF
-interface|Marpa::R2::Scanless>.
+interface|Marpa::R3::Scanless>.
 Almost all of the functionality of
 the Stuifzand interface can be duplicated
 in the SLIF interface by switching immediately
@@ -61,20 +61,20 @@ to external scanning,
 and never switching back to internal scanning.
 To switch immediately to external scanning in the SLIF,
 specify a length of zero for its initial
-L<C<read()>|Marpa::R2::Scanless::R/"read()">.
+L<C<read()>|Marpa::R3::Scanless::R/"read()">.
 For more details, see the
 L<document for the SLIF
-itself|Marpa::R2::Scanless>.
+itself|Marpa::R3::Scanless>.
 
 =head1 The source string
 
 Stuifzand interface  source strings are specified using the 
-L<the C<source> named argument of Marpa::R2's grammars|Marpa::R2::NAIF::Grammar/"source">.
+L<the C<source> named argument of Marpa::R3's grammars|Marpa::R3::NAIF::Grammar/"source">.
 BNF source strings perform the functions of
 the
-L<C<rules>|Marpa::R2::NAIF::Grammar/"rules">
+L<C<rules>|Marpa::R3::NAIF::Grammar/"rules">
 and the
-L<C<start>|Marpa::R2::NAIF::Grammar/"start">
+L<C<start>|Marpa::R3::NAIF::Grammar/"start">
 named arguments of Marpa grammars.
 When
 the C<source> named argument is used to specify a grammar,
@@ -83,7 +83,7 @@ and vice versa.
 The syntax for the Stuifzand interface's source string is the
 same as
 L<the syntax for the SLIF
-DSL|Marpa::R2::Scanless::DSL>,
+DSL|Marpa::R3::Scanless::DSL>,
 except that features and syntax not relevant to the Stuifzand
 interface are not supported.
 
@@ -153,12 +153,12 @@ do not exist in the Stuifzand interface.
 
 Actions specified as array descriptors, for example,
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 ignore: 1
 
     action => [start,length,value]
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 exist primarily to support lexeme semantics.
 They can also specify rule semantics,
@@ -170,25 +170,25 @@ and probably never will be.
    
 =head1 Copyright and License
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 ignore: 1
 
   Copyright 2014 Jeffrey Kegler
-  This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+  This file is part of Marpa::R3.  Marpa::R3 is free software: you can
   redistribute it and/or modify it under the terms of the GNU Lesser
   General Public License as published by the Free Software Foundation,
   either version 3 of the License, or (at your option) any later version.
 
-  Marpa::R2 is distributed in the hope that it will be useful,
+  Marpa::R3 is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser
-  General Public License along with Marpa::R2.  If not, see
+  General Public License along with Marpa::R3.  If not, see
   http://www.gnu.org/licenses/.
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 =cut
 

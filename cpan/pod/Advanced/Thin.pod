@@ -1,21 +1,21 @@
 # Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
 =head1 NAME
 
-Marpa::R2::Advanced::Thin - Direct access to Libmarpa
+Marpa::R3::Advanced::Thin - Direct access to Libmarpa
 
 =head1 About this document
 
@@ -41,7 +41,7 @@ and is willing to go to some extra effort.
 =head1 How this document is written
 
 This document assumes that the reader is familiar with
-the other Marpa::R2 documentation,
+the other Marpa::R3 documentation,
 as well as with the Libmarpa API document.
 This means its reader will have to know some C language --
 at least enough to understand a discussion
@@ -157,18 +157,18 @@ The one-letter abbreviations for these
 are, respectively,
 C<c>, C<g>, C<r>, C<b>, C<o>, C<t> and C<v>.
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 ignore: 1
 
-    Marpa_Config        Marpa::R2::Thin::C
-    Marpa_Grammar       Marpa::R2::Thin::G
-    Marpa_Recognizer    Marpa::R2::Thin::R
-    Marpa_Bocage        Marpa::R2::Thin::B
-    Marpa_Ordering      Marpa::R2::Thin::O
-    Marpa_Tree          Marpa::R2::Thin::T
-    Marpa_Value         Marpa::R2::Thin::V
+    Marpa_Config        Marpa::R3::Thin::C
+    Marpa_Grammar       Marpa::R3::Thin::G
+    Marpa_Recognizer    Marpa::R3::Thin::R
+    Marpa_Bocage        Marpa::R3::Thin::B
+    Marpa_Ordering      Marpa::R3::Thin::O
+    Marpa_Tree          Marpa::R3::Thin::T
+    Marpa_Value         Marpa::R3::Thin::V
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The thin interface implements a Perl class
 corresponding to
@@ -196,14 +196,14 @@ Constructors for the time objects may be called using
 the C<new> method of the corresponding Perl class.
 For example,
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $recce = Marpa::R2::Thin::R->new($grammar);
+    my $recce = Marpa::R3::Thin::R->new($grammar);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 Perl applications can destroy objects of the
 Marpa thin classes 
@@ -258,7 +258,7 @@ controls the throw setting, so that a problem with them
 suggests the throw setting itself may not be correct.
 The methods which never obey the throw setting,
 are
-L<< C<< Marpa::R2::Thin::G->new() >>|"Marpa::R2::Thin::G->new()" >>,
+L<< C<< Marpa::R3::Thin::G->new() >>|"Marpa::R3::Thin::G->new()" >>,
 L<< C<throw_set()>|"$g->throw_set()" >>
 and L<< C<ruby_slippers_set()>|"$r->ruby_slippers_set()" >>.
 These methods throw all failures.
@@ -465,7 +465,7 @@ to the time class
 of the Libmarpa method.
 For example, C<< $g->start_symbol_set() >>
 will be in
-the C<Marpa::R2::Thin:G> Perl class.
+the C<Marpa::R3::Thin:G> Perl class.
 
 =head2 Arguments
 
@@ -538,23 +538,23 @@ Here is an example of a Libmarpa function
 whose corresponding Marpa thin method follows the
 general pattern.
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 ignore: 1
 
   marpa_g_start_symbol_set (grammar, symbol_S);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 and here is the corresonding thin Marpa call:
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 normalize-whitespace: 1
 partial: 1
 
     $grammar->start_symbol_set($symbol_S);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 =head1 Error methods
 
@@ -566,15 +566,15 @@ than Libmarpa's own.
 
 =head2 C<< $g->error() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin grammar error methods
 normalize-whitespace: 1
 
     my ( $error_code, $error_description ) = $grammar->error();
-    my @error_names = Marpa::R2::Thin::error_names();
+    my @error_names = Marpa::R3::Thin::error_names();
     my $error_name = $error_names[$error_code];
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 In scalar context,
 the C<error()> method returns the error description.
@@ -604,13 +604,13 @@ indexed by Libmarpa error code.
 
 =head2 C<< $g->throw_set() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin throw_set() example
 normalize-whitespace: 1
 
     $grammar->throw_set(0);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<throw_set()> method turns the throw flag
 for the grammar on or off,
@@ -630,16 +630,16 @@ by the Marpa thin interface.
 
 =head1 Grammar methods
 
-=head2 C<< Marpa::R2::Thin::G->new() >>
+=head2 C<< Marpa::R3::Thin::G->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $grammar = Marpa::R2::Thin::G->new( { if => 1 } );
+    my $grammar = Marpa::R3::Thin::G->new( { if => 1 } );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The one argument to the Marpa thin interface's
 grammar constructor,
@@ -675,13 +675,13 @@ undocumented and deprecated global variable.)
 
 =head2 C<< $g->event() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin event() example
 normalize-whitespace: 1
 
     my ( $event_type, $value ) = $grammar->event( $event_ix++ );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<event()> method returns a two-element array on success.
 The first element is a string naming the event type,
@@ -714,14 +714,14 @@ On unthrown failure, C<event()> returns a Perl C<undef>.
 
 =head2 C<< $g->rule_new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
     my $start_rule_id = $grammar->rule_new( $symbol_S, [$symbol_E] );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<rule_new()> grammar method is
 the Libmarpa thin interface method corresponding
@@ -740,7 +740,7 @@ On unthrown failure, it returns -2.
 
 =head2 C<< $g->sequence_new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin sequence_new() example
 normalize-whitespace: 1
 
@@ -753,7 +753,7 @@ normalize-whitespace: 1
             }
         );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<sequence_new()> grammar method is
 the Libmarpa thin interface method corresponding
@@ -822,14 +822,14 @@ On unthrown failure, it returns -2.
 
 =head2 C<< $g->precompute() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
     $grammar->precompute();
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<precompute()> method follows the general pattern.
 In addition to errors,
@@ -907,16 +907,16 @@ L<above|"The general pattern">.
 
 =head1 Recognizer methods
 
-=head2 C<< Marpa::R2::Thin::R->new() >>
+=head2 C<< Marpa::R3::Thin::R->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $recce = Marpa::R2::Thin::R->new($grammar);
+    my $recce = Marpa::R3::Thin::R->new($grammar);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<new()> method takes a Marpa thin grammar object
 as its one argument.
@@ -926,13 +926,13 @@ On unthrown failure, it returns a Perl C<undef>.
 
 =head2 C<< $r->ruby_slippers_set() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin ruby_slippers_set() example
 normalize-whitespace: 1
 
     $recce->ruby_slippers_set(1);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 With an argument of 1,
 the C<ruby_slippers_set()> method enables "Ruby Slippers" mode.
@@ -940,7 +940,7 @@ An argument of 0 disables "Ruby Slippers" mode.
 By default, 
 Ruby Slippers mode is disabled.
 Note that this default (disabled) is
-the opposite of that in the higher level L<Marpa::R2> interface.
+the opposite of that in the higher level L<Marpa::R3> interface.
 
 The L<< C<alternative()>
 method|"$r->alternative()" >>
@@ -957,14 +957,14 @@ as exceptions.
 
 =head2 C<< $r->alternative() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
     $recce->alternative( $symbol_number, 2, 1 );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 In the Libmarpa API
 the
@@ -1000,14 +1000,14 @@ see L<< C<ruby_slippers_set()>|"$r->ruby_slippers_set()" >>.
 
 =head2 C<< $r->terminals_expected() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin terminals_expected() example
 partial: 1
 normalize-whitespace: 1
 
     my @terminals = $recce->terminals_expected();
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<terminals_expected()> method takes no arguments.
 On success, it returns an array containing the
@@ -1021,7 +1021,7 @@ C<terminals_expected()> returns a Perl C<undef>.
 
 =head2 C<< $r->progress_item() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin progress_item() example
 
     my $ordinal = $recce->latest_earley_set();
@@ -1033,7 +1033,7 @@ name: Thin progress_item() example
     }
     $recce->progress_report_finish();
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<progress_item()> method takes no arguments.
 On success, it returns an array of 3 elements:
@@ -1088,17 +1088,17 @@ L<above|"The general pattern">.
 
 =head1 Bocage methods
 
-=head2 C<< Marpa::R2::Thin::B->new() >>
+=head2 C<< Marpa::R3::Thin::B->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
     my $latest_earley_set_ID = $recce->latest_earley_set();
-    my $bocage = Marpa::R2::Thin::B->new( $recce, $latest_earley_set_ID );
+    my $bocage = Marpa::R3::Thin::B->new( $recce, $latest_earley_set_ID );
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<new()> method takes a Marpa thin recognizer object
 as its one argument.
@@ -1125,16 +1125,16 @@ L<above|"The general pattern">.
 
 =head1 Ordering methods
 
-=head2 C<< Marpa::R2::Thin::O->new() >>
+=head2 C<< Marpa::R3::Thin::O->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $order = Marpa::R2::Thin::O->new($bocage);
+    my $order = Marpa::R3::Thin::O->new($bocage);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<new()> method takes a Marpa thin bocage object
 as its one argument.
@@ -1161,16 +1161,16 @@ L<above|"The general pattern">.
 
 =head1 Tree methods
 
-=head2 C<< Marpa::R2::Thin::T->new() >>
+=head2 C<< Marpa::R3::Thin::T->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $tree = Marpa::R2::Thin::T->new($order);
+    my $tree = Marpa::R3::Thin::T->new($order);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<new()> method takes a Marpa thin ordering object
 as its one argument.
@@ -1197,16 +1197,16 @@ L<above|"The general pattern">.
 
 =head1 Value methods
 
-=head2 C<< Marpa::R2::Thin::V->new() >>
+=head2 C<< Marpa::R3::Thin::V->new() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
-    my $valuator = Marpa::R2::Thin::V->new($tree);
+    my $valuator = Marpa::R3::Thin::V->new($tree);
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<new()> method takes a Marpa thin tree object
 as its one argument.
@@ -1216,7 +1216,7 @@ On unthrown failure, it returns a Perl C<undef>.
 
 =head2 C<< $v->location() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin location() example
 normalize-whitespace: 1
 
@@ -1237,7 +1237,7 @@ normalize-whitespace: 1
     }
 
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<location()> method takes no arguments.
 The C<location()> method always succeeds,
@@ -1282,14 +1282,14 @@ the array is empty.
 
 =head2 C<< $v->step() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 partial: 1
 normalize-whitespace: 1
 
     my ( $type, @step_data ) = $valuator->step();
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<step()> method takes no arguments.
 On success, C<step()>
@@ -1415,14 +1415,14 @@ The string will usually be a description of the error.
 
 =head2 C<< $v->step_type() >>
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin location() example
 partial: 1
 normalize-whitespace: 1
 
     $type = $valuator->step_type();
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 The C<step_type()> method takes no arguments.
 On success, C<step_type()>
@@ -1471,11 +1471,11 @@ L<above|"The general pattern">.
 
 =head1 Example
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 name: Thin example
 normalize-whitespace: 1
 
-    my $grammar = Marpa::R2::Thin::G->new( { if => 1 } );
+    my $grammar = Marpa::R3::Thin::G->new( { if => 1 } );
     $grammar->force_valued();
     my $symbol_S = $grammar->symbol_new();
     my $symbol_E = $grammar->symbol_new();
@@ -1488,7 +1488,7 @@ normalize-whitespace: 1
     my $number_rule_id = $grammar->rule_new( $symbol_E, [$symbol_number] );
     $grammar->precompute();
 
-    my $recce = Marpa::R2::Thin::R->new($grammar);
+    my $recce = Marpa::R3::Thin::R->new($grammar);
     $recce->start_input();
 
     # The numbers from 1 to 3 are themselves --
@@ -1517,12 +1517,12 @@ normalize-whitespace: 1
     $recce->earleme_complete();
 
     my $latest_earley_set_ID = $recce->latest_earley_set();
-    my $bocage        = Marpa::R2::Thin::B->new( $recce, $latest_earley_set_ID );
-    my $order         = Marpa::R2::Thin::O->new($bocage);
-    my $tree          = Marpa::R2::Thin::T->new($order);
+    my $bocage        = Marpa::R3::Thin::B->new( $recce, $latest_earley_set_ID );
+    my $order         = Marpa::R3::Thin::O->new($bocage);
+    my $tree          = Marpa::R3::Thin::T->new($order);
     my @actual_values = ();
     while ( $tree->next() ) {
-        my $valuator = Marpa::R2::Thin::V->new($tree);
+        my $valuator = Marpa::R3::Thin::V->new($tree);
         my @stack = ();
         STEP: while ( 1 ) {
             my ( $type, @step_data ) = $valuator->step();
@@ -1571,29 +1571,29 @@ normalize-whitespace: 1
         push @actual_values, $stack[0];
     } ## end while ( $tree->next() )
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 =head1 Copyright and License
 
-=for Marpa::R2::Display
+=for Marpa::R3::Display
 ignore: 1
 
   Copyright 2014 Jeffrey Kegler
-  This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+  This file is part of Marpa::R3.  Marpa::R3 is free software: you can
   redistribute it and/or modify it under the terms of the GNU Lesser
   General Public License as published by the Free Software Foundation,
   either version 3 of the License, or (at your option) any later version.
 
-  Marpa::R2 is distributed in the hope that it will be useful,
+  Marpa::R3 is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser
-  General Public License along with Marpa::R2.  If not, see
+  General Public License along with Marpa::R3.  If not, see
   http://www.gnu.org/licenses/.
 
-=for Marpa::R2::Display::End
+=for Marpa::R3::Display::End
 
 =cut
 

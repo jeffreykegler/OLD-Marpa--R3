@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 # Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
 use 5.010;
@@ -26,8 +26,8 @@ use Config;
 use Module::Build;
 
 use lib File::Spec->catdir('inc');
-use Marpa::R2::Build_Me;
-use Marpa::R2::Config;
+use Marpa::R3::Build_Me;
+use Marpa::R3::Config;
 
 my @packages_for_perl_autoconf = qw( Config::AutoConf );
 my @always_required            = qw(
@@ -54,16 +54,16 @@ my @always_required            = qw(
 );
 
 my %configure_requires =
-    map { ( $_, $Marpa::R2::VERSION_FOR_CONFIG{$_} ) }
+    map { ( $_, $Marpa::R3::VERSION_FOR_CONFIG{$_} ) }
     qw( CPAN::Meta::Converter Module::Build ),
     @always_required,
     @packages_for_perl_autoconf;
 my %requires =
-    map { ( $_, $Marpa::R2::VERSION_FOR_CONFIG{$_} ) }
+    map { ( $_, $Marpa::R3::VERSION_FOR_CONFIG{$_} ) }
     qw( HTML::Entities HTML::Parser ),
     @always_required;
 my %recommends =
-    map { ( $_, $Marpa::R2::VERSION_FOR_CONFIG{$_} ) }
+    map { ( $_, $Marpa::R3::VERSION_FOR_CONFIG{$_} ) }
     ( @packages_for_perl_autoconf, qw( PPI ) );
 
 my %pod_files = ();
@@ -119,16 +119,16 @@ for my $pm_file (qw(Version.pm Installed.pm)) {
 }
 
 my @no_index_namespace_inclusive = qw(
-    Marpa::R2::HTML
-    Marpa::R2::Value
-    Marpa::R2::Perl
-    Marpa::R2::Test
-    Marpa::R2::Display
-    Marpa::R2::Inner
-    Marpa::R2::Internal
-    Marpa::R2::MetaAST
-    Marpa::R2::MetaG
-    Marpa::R2::Stuifzand
+    Marpa::R3::HTML
+    Marpa::R3::Value
+    Marpa::R3::Perl
+    Marpa::R3::Test
+    Marpa::R3::Display
+    Marpa::R3::Inner
+    Marpa::R3::Internal
+    Marpa::R3::MetaAST
+    Marpa::R3::MetaG
+    Marpa::R3::Stuifzand
 );
 
 my @files_to_cleanup = (
@@ -137,9 +137,9 @@ my @files_to_cleanup = (
     'lib/Marpa/R2.o',            'libmarpa_build'
 );
 
-my $build = Marpa::R2::Build_Me->new(
+my $build = Marpa::R3::Build_Me->new(
     add_to_cleanup     => \@files_to_cleanup,
-    module_name        => 'Marpa::R2',
+    module_name        => 'Marpa::R3',
     dist_author        => 'Jeffrey Kegler',
     dist_abstract      => 'Release 2 of Marpa',
     recommends         => \%recommends,
@@ -161,11 +161,11 @@ my $build = Marpa::R2::Build_Me->new(
                     )
             ],
             namespace => [
-                'Marpa::R2::Recognizer', 'Marpa::R2::Grammar',
+                'Marpa::R3::Recognizer', 'Marpa::R3::Grammar',
                 @no_index_namespace_inclusive
             ],
             package =>
-                [ @no_index_namespace_inclusive, 'Marpa::R2::Thin::Trace' ],
+                [ @no_index_namespace_inclusive, 'Marpa::R3::Thin::Trace' ],
         }
     },
     meta_merge => {

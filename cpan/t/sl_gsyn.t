@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 # Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
 # Synopsis for Scannerless version of Stuizand interface
@@ -23,16 +23,16 @@ use Test::More tests => 4;
 use English qw( -no_match_vars );
 
 use lib 'inc';
-use Marpa::R2::Test;
+use Marpa::R3::Test;
 
 ## no critic (ErrorHandling::RequireCarping);
 
-# Marpa::R2::Display
+# Marpa::R3::Display
 # name: Scanless grammar synopsis
 
-use Marpa::R2;
+use Marpa::R3;
 
-my $grammar = Marpa::R2::Scanless::G->new(
+my $grammar = Marpa::R3::Scanless::G->new(
     {   
         source          => \(<<'END_OF_SOURCE'),
 :default ::= action => do_first_arg
@@ -64,12 +64,12 @@ END_OF_SOURCE
     }
 );
 
-# Marpa::R2::Display::End
+# Marpa::R3::Display::End
 
 my $show_rules_output = $grammar->show_rules();
 $show_rules_output .= $grammar->show_rules(1, 'L0');
 
-Marpa::R2::Test::is( $show_rules_output,
+Marpa::R3::Test::is( $show_rules_output,
     <<'END_OF_SHOW_RULES_OUTPUT', 'Scanless show_rules()' );
 G1 R0 Script ::= Expression +
 G1 R1 Expression ::= Expression
@@ -118,10 +118,10 @@ END_OF_SHOW_RULES_OUTPUT
 sub my_parser {
     my ( $grammar, $p_input_string ) = @_;
 
-# Marpa::R2::Display
+# Marpa::R3::Display
 # name: Scanless recognizer synopsis
 
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    my $recce = Marpa::R3::Scanless::R->new( { grammar => $grammar } );
     my $self = bless { grammar => $grammar }, 'My_Actions';
     $self->{recce} = $recce;
 
@@ -140,7 +140,7 @@ sub my_parser {
             "No parse was found, after reading the entire input\n";
     }
 
-# Marpa::R2::Display::End
+# Marpa::R3::Display::End
 
     return ${$value_ref};
 
@@ -163,7 +163,7 @@ for my $test (@tests) {
     Test::More::like( $value, $output_re, 'Value of scannerless parse' );
 }
 
-# Marpa::R2::Display
+# Marpa::R3::Display
 # name: Scanless recognizer semantics
 
 package My_Actions;
@@ -177,9 +177,9 @@ sub do_pow       { shift; return $_[0]**$_[2] }
 sub do_first_arg { shift; return shift; }
 sub do_script    { shift; return join q{ }, @_ }
 
-# Marpa::R2::Display::End
+# Marpa::R3::Display::End
 
-# Marpa::R2::Display
+# Marpa::R3::Display
 # name: Scanless recognizer diagnostics
 
 sub show_last_expression {
@@ -191,7 +191,7 @@ sub show_last_expression {
     return "Last expression successfully parsed was: $last_expression";
 } ## end sub show_last_expression
 
-# Marpa::R2::Display::End
+# Marpa::R3::Display::End
 
 # Local Variables:
 #   mode: cperl

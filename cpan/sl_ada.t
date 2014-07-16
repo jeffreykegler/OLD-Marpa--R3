@@ -1,17 +1,17 @@
 #!perl
 # Copyright 2012 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
 # Demo of abstract syntax forest -- An Ada Lovelace quote
@@ -22,7 +22,7 @@ use warnings;
 use English qw( -no_match_vars );
 use GetOpt::Long;
 
-use Marpa::R2;
+use Marpa::R3;
 
 sub usage {
 
@@ -284,7 +284,7 @@ world NN
 yet RB
 END_OF_SOURCE
 
-my $slg = Marpa::R2::Scanless::G->new(
+my $slg = Marpa::R3::Scanless::G->new(
     {   action_object  => 'My_Nodes',
         bless_package => 'My_Nodes',
         source         => \$rules,
@@ -315,7 +315,7 @@ will regard with especial interest all that can tend to facilitate
 the translation of its principles into explicit practical forms.
 END_OF_QUOTATION
 
-my $slr = Marpa::R2::Scanless::R->new( { grammar => $slg,
+my $slr = Marpa::R3::Scanless::R->new( { grammar => $slg,
         ranking_method => 'high_rule_only' } );
 
 my %punctuation = ( q{,} => 'comma', q{:} => 'colon', q{.} => 'period' );
@@ -351,7 +351,7 @@ LEXEME: while ( 1 ) {
     pos $quotation = (pos $quotation) + 1;
 } ## end LEXEME: while ( pos $quotation < $quote_length )
 
-my $asf = Marpa::R2::Scanless::ASF->new(
+my $asf = Marpa::R3::Scanless::ASF->new(
     {   slr     => $slr,
         choice  => 'My_ASF::choix',
         default => 'My_ASF'
