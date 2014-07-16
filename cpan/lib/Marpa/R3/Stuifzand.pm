@@ -1,19 +1,19 @@
 # Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# This file is part of Marpa::R3.  Marpa::R3 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
 # either version 3 of the License, or (at your option) any later version.
 #
-# Marpa::R2 is distributed in the hope that it will be useful,
+# Marpa::R3 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
+# General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
-package Marpa::R2::Stuifzand;
+package Marpa::R3::Stuifzand;
 
 use 5.010;
 use strict;
@@ -26,7 +26,7 @@ $STRING_VERSION = $VERSION;
 $VERSION = eval $VERSION;
 ## use critic
 
-package Marpa::R2::Internal::Stuifzand;
+package Marpa::R3::Internal::Stuifzand;
 
 use English qw( -no_match_vars );
 
@@ -105,7 +105,7 @@ symbol_name
 );
 
 
-$node_status{'Marpa::R2::Internal::MetaAST'} = q{};
+$node_status{'Marpa::R3::Internal::MetaAST'} = q{};
 $node_status{array_descriptor} = "Actions in the form of array descriptors are not allowed";
 $node_status{character_class} = "Character classes are not allowed";
 $node_status{completion_event_declaration} = "Completion events are not allowed";
@@ -130,11 +130,11 @@ my %catch_error_node =
 # This code goes to some trouble to report errors with a large enough contet
 # to be meaningful -- rules or alternatives
 
-sub Marpa::R2::Internal::Stuifzand::check_ast_node {
+sub Marpa::R3::Internal::Stuifzand::check_ast_node {
     my ($node) = @_;
     my $ref_type = ref $node;
     return if not $ref_type;
-    $ref_type =~ s/\A Marpa::R2::Internal::MetaAST_Nodes:: //xms;
+    $ref_type =~ s/\A Marpa::R3::Internal::MetaAST_Nodes:: //xms;
     my $report_error = 0;
     my $problem = $node_status{$ref_type};
     my $catch_error = $catch_error_node{$ref_type};
@@ -147,7 +147,7 @@ sub Marpa::R2::Internal::Stuifzand::check_ast_node {
             last NORMAL_PROCESSING;
         }
         for my $sub_node ( @{$node} ) {
-            $problem = Marpa::R2::Internal::Stuifzand::check_ast_node($sub_node);
+            $problem = Marpa::R3::Internal::Stuifzand::check_ast_node($sub_node);
             if ($problem) {
                 return $problem if not $catch_error;
                 last NORMAL_PROCESSING;
@@ -158,30 +158,30 @@ sub Marpa::R2::Internal::Stuifzand::check_ast_node {
 
     # If we are here, we are catching an error 
         my ( $start, $end ) = @{$node};
-        my $problem_was_here = substr ${$Marpa::R2::Internal::P_SOURCE}, $start,
+        my $problem_was_here = substr ${$Marpa::R3::Internal::P_SOURCE}, $start,
             ($end-$start+1);
         chomp $problem_was_here;
         chomp $problem;
-        Marpa::R2::exception(
+        Marpa::R3::exception(
             "Stuifzand (BNF) interface grammar is using a disallowed feature\n",
             q{  } . $problem . "\n",
             "  Problem was in the following text:\n",
             $problem_was_here,
             "\n"
         );
-} ## end sub Marpa::R2::Internal::Stuifzand::check_ast_node
+} ## end sub Marpa::R3::Internal::Stuifzand::check_ast_node
 
 sub parse_rules {
     my ($p_rules_source) = @_;
     my $self             = {};
-    my $ast              = Marpa::R2::Internal::MetaAST->new($p_rules_source);
+    my $ast              = Marpa::R3::Internal::MetaAST->new($p_rules_source);
     {
-        local $Marpa::R2::Internal::P_SOURCE = $p_rules_source;
-        my $problem = Marpa::R2::Internal::Stuifzand::check_ast_node(
+        local $Marpa::R3::Internal::P_SOURCE = $p_rules_source;
+        my $problem = Marpa::R3::Internal::Stuifzand::check_ast_node(
             $ast->{top_node} );
         ## Uncaught problem -- should not happen
         if ($problem) {
-            Marpa::R2::exception(
+            Marpa::R3::exception(
                 "Stuifzand (BNF) interface grammar has a problem\n",
                 q{  } . $problem . "\n",
             );
@@ -189,7 +189,7 @@ sub parse_rules {
     }
     my $hashed_ast = $ast->ast_to_hash();
     my $start_lhs = $hashed_ast->{'start_lhs'} // $hashed_ast->{'first_lhs'};
-    Marpa::R2::exception( 'No rules in Stuifzand grammar', )
+    Marpa::R3::exception( 'No rules in Stuifzand grammar', )
         if not defined $start_lhs;
 
     my $internal_start_lhs = '[:start]';
