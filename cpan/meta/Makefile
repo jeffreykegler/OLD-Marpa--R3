@@ -17,9 +17,9 @@
 
 dummy:
 
-all: ../lib/Marpa/R2/Internal.pm html_meta
+all: ../lib/Marpa/R3/Internal.pm html_meta
 
-../lib/Marpa/R2/Internal.pm: make_internal_pm.pl
+../lib/Marpa/R3/Internal.pm: make_internal_pm.pl
 	perl make_internal_pm.pl > $@
 
 html_meta:
