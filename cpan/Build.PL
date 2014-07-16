@@ -77,13 +77,13 @@ my %pod_files = ();
         next LINE if not $pod_file =~ / [.] pod \z /xms;
         next LINE if $pod_file =~ m{ libmarpa [/] dev [/] old_pod [/] }xms;
         if ( ( my $destfile = $pod_file )
-            =~ s{ \A pod [/] }{lib/Marpa/R2/}xms )
+            =~ s{ \A pod [/] }{lib/Marpa/R3/}xms )
         {
             $pod_files{$pod_file} = $destfile;
             next LINE;
         } ## end if ( ( my $destfile = $pod_file ) =~ ...)
         if ( ( my $destfile = $pod_file )
-            =~ s{ \A html [/] pod [/] }{lib/Marpa/R2/}xms )
+            =~ s{ \A html [/] pod [/] }{lib/Marpa/R3/}xms )
         {
             $pod_files{$pod_file} = $destfile;
             next LINE;
@@ -91,8 +91,8 @@ my %pod_files = ();
         die "Failed to rename POD file: $pod_file";
     } ## end LINE: for my $pod_file (@pod_files)
 }
-$pod_files{'pod/Marpa_R2.pod'}  = 'lib/Marpa/R2.pod';
-$pod_files{'html/pod/HTML.pod'} = 'lib/Marpa/R2/HTML.pod';
+$pod_files{'pod/Marpa_R3.pod'}  = 'lib/Marpa/R3.pod';
+$pod_files{'html/pod/HTML.pod'} = 'lib/Marpa/R3/HTML.pod';
 
 my %pm_files = ();
 File::Find::find(
@@ -114,7 +114,7 @@ File::Find::find(
     'html/lib'
 );
 for my $pm_file (qw(Version.pm Installed.pm)) {
-    my $pm_fullname = 'lib/Marpa/R2/' . $pm_file;
+    my $pm_fullname = 'lib/Marpa/R3/' . $pm_file;
     $pm_files{$pm_fullname} = $pm_fullname;
 }
 
@@ -132,9 +132,9 @@ my @no_index_namespace_inclusive = qw(
 );
 
 my @files_to_cleanup = (
-    'lib/Marpa/R2/Version.pm',   'pperl/Marpa/R2/Perl/Version.pm',
-    'lib/Marpa/R2/Installed.pm', 'pperl/Marpa/R2/Perl/Installed.pm',
-    'lib/Marpa/R2.o',            'libmarpa_build'
+    'lib/Marpa/R3/Version.pm',   'pperl/Marpa/R3/Perl/Version.pm',
+    'lib/Marpa/R3/Installed.pm', 'pperl/Marpa/R3/Perl/Installed.pm',
+    'lib/Marpa/R3.o',            'libmarpa_build'
 );
 
 my $build = Marpa::R3::Build_Me->new(
@@ -152,7 +152,7 @@ my $build = Marpa::R3::Build_Me->new(
         'html/script/marpa_r2_html_fmt',
         'html/script/marpa_r2_html_score',
     ],
-    xs_files => { 'xs/R2.xs' => 'lib/Marpa/R2.xs' },
+    xs_files => { 'xs/R3.xs' => 'lib/Marpa/R3.xs' },
     meta_add => {
         no_index => {
             directory => [
@@ -170,7 +170,7 @@ my $build = Marpa::R3::Build_Me->new(
     },
     meta_merge => {
         resources =>
-            { repository => 'git://github.com/jeffreykegler/Marpa--R2.git', },
+            { repository => 'git://github.com/jeffreykegler/Marpa--R3.git', },
     },
     pod_files     => \%pod_files,
     license       => 'lgpl3',
