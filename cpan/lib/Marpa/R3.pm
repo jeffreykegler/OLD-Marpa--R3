@@ -33,8 +33,6 @@ use XSLoader;
 
 use Marpa::R3::Version;
 
-$Marpa::R3::USING_XS = 1;
-$Marpa::R3::USING_PP = 0;
 $Marpa::R3::LIBMARPA_FILE = '[built-in]';
 
 LOAD_EXPLICIT_LIBRARY: {
