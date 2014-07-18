@@ -267,7 +267,9 @@ my @no_index_namespace_inclusive = qw(
 );
 
 my @files_to_cleanup = (
-    'lib/Marpa/R3/Version.pm',   'pperl/Marpa/R3/Perl/Version.pm',
+    'lib/Marpa/R3/Version.pm',
+    'pperl/Marpa/R3/Perl/Version.pm',
+    'html/lib/Marpa/R3/Test/Version.pm',
     'lib/Marpa/R3/Installed.pm', 'pperl/Marpa/R3/Perl/Installed.pm',
     'lib/Marpa/R3.o',            'libmarpa_build'
 );
@@ -277,6 +279,8 @@ WriteMakefile(
         NAME     => 'Marpa::R3',
         AUTHOR   => 'Jeffrey Kegler',
         ABSTRACT => 'Release 3 of Marpa',
+
+        # INC => '-Iinc',
 
         # recommends         => \%recommends,
         PREREQ_PM          => \%requires,
@@ -318,7 +322,6 @@ WriteMakefile(
     my @r3_perl_components = qw(pperl Marpa R3 Perl);
     my @r3_components      = qw(lib Marpa R3);
     my $config_pm_filename = File::Spec->catfile(qw(inc Marpa R3 Config.pm ));
-    my $build_filename     = 'Build';
     my @derived_files      = (
         File::Spec->catfile( @r3_components,      'Version.pm' ),
         File::Spec->catfile( @r3_components,      'Installed.pm' ),
@@ -357,6 +360,29 @@ WriteMakefile(
             $self->do_libmarpa();
         } ## end if ( not defined $self->args('libmarpa-external') )
     } ## end if (0)
+
+}
+
+{
+    my @use_packages = qw( HTML::Entities HTML::Parser);
+    my $text         = $preamble;
+    $text .= "package Marpa::R3::HTML::Test;\n";
+
+##no critic(ValuesAndExpressions::RequireInterpolationOfMetachars)
+    $text .= q{use vars qw($TIMESTAMP %VERSION_FOR_CONFIG)} . qq{;\n};
+    $text .= q{$TIMESTAMP='} . localtime()->datetime . qq{';\n};
+##use critic
+
+    $text .= '%VERSION_FOR_CONFIG = (' . "\n";
+    for my $package (@use_packages) {
+        my $version = $version_for_confiG{$package};
+        die "No version defined for $package" if not defined $version;
+        $text .= q{    '} . $package . q{' => '} . $version . qq{',\n};
+    }
+    $text .= ');' . "\n\n";
+    $text .= "1;\n";
+
+    file_write( $text, qw(html tool lib Marpa R3 HTML Test Version.pm ) );
 
 }
 

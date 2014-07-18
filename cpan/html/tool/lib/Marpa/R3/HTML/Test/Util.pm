@@ -79,17 +79,17 @@ sub load_or_skip_all {
         exit 0;
     } ## end if ( !$eval_result )
     use lib 'config';
-    $eval_result = eval { require Marpa::R3::Config; 1 };
+    $eval_result = eval { require Marpa::R3::HTML::Test::Version; 1 };
     if ( !$eval_result ) {
         Test::More::plan tests => 1;
         Test::More::diag($EVAL_ERROR);
-        Test::More::fail("Could not load Marpa::R3::Config\n");
+        Test::More::fail("Could not load Marpa::R3::HTML::Test::Version\n");
         exit 0;
     } ## end if ( !$eval_result )
-    my $version_wanted = $Marpa::R3::VERSION_FOR_CONFIG{$module_name};
+    my $version_wanted = $Marpa::R3::HTML::Test::VERSION_FOR_CONFIG{$module_name};
     if ( not defined $version_wanted ) {
         Test::More::plan tests => 1;
-        Test::More::fail("$module_name is not known to Marpa::R3");
+        Test::More::fail("$module_name is not known to Marpa::R3::HTML");
         exit 0;
     }
     my $module_version = eval q{$} . $module_name . '::VERSION';
