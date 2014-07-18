@@ -44,12 +44,6 @@ sub quotearg {
 sub run_command {
     my (@args)     = @_;
 
-    my $blib = $ENV{MARPA_TEST_BLIB};
-    my $current_wd = Cwd::getcwd();
-    $blib //= $current_wd;
-    my $blib_arg   = '-Mblib=' . quotearg($blib);
-
-    # my $command = join q{ }, $EXECUTABLE_NAME, $blib_arg, map { quotearg($_) } @args;
     my $command = join q{ }, $EXECUTABLE_NAME, map { quotearg($_) } @args;
 
     ## no critic (InputOutput::ProhibitBacktickOperators)

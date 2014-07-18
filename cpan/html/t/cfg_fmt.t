@@ -42,8 +42,7 @@ BEGIN { Test::More::plan tests => 10; }
 use lib 'tool/lib';
 use Marpa::R3::Test;
 
-my $blib = $ENV{MARPA_TEST_BLIB} // 'blib';
-my $script_dir = File::Spec->catdir( $blib, 'script' );
+my $script_dir = File::Spec->catdir( 'blib', 'script' );
 
 sub run_one_test {
     my ( $test_name, $html, $config_ref, $expected_ref ) = @_;

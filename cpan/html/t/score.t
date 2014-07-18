@@ -45,8 +45,7 @@ use lib 'html/tool/lib';
 use Marpa::R3::Test;
 use Marpa::R3::HTML::Test::Util;
 
-my $blib = $ENV{MARPA_TEST_BLIB} // 'blib';
-my $script_dir = File::Spec->catdir( $blib, 'script' );
+my $script_dir = File::Spec->catdir( 'blib', 'script' );
 
 my @data_dir   = qw( html t fmt_t_data );
 
