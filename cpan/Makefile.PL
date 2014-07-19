@@ -43,7 +43,7 @@ my $use_perl_autoconf = $ENV{MARPA_USE_PERL_AUTOCONF}
 # It's here for convenience in working on this file.
 # perl -MModule::CoreList -E 'print $Module::CoreList::version{5.010001}{Carp};'
 
-my %version_for_confiG = (
+my %version_for_config = (
     # Carp is 1.11 to allow objects to be thrown as exceptions.
     'Carp'                  => '1.11',
     'Config::AutoConf'      => '0.22',
@@ -109,7 +109,7 @@ sub xs_version_contents {
 ##use critic
 
     for my $package (@use_packages) {
-        my $version = $version_for_confiG{$package};
+        my $version = $version_for_config{$package};
         die "No version defined for $package" if not defined $version;
         $text .= "use $package $version ();\n";
     }
@@ -133,7 +133,7 @@ sub perl_version_contents {
         my $version =
               $package eq 'Marpa::R3'
             ? $marpa_version
-            : $version_for_confiG{$package};
+            : $version_for_config{$package};
         die "No version defined for $package" if not defined $version;
         $text .= "use $package $version ();\n";
     } ## end for my $package (@use_packages)
@@ -188,17 +188,17 @@ my @always_required            = qw(
 );
 
 my %configure_requires =
-    map { ( $_, $version_for_confiG{$_} ) }
+    map { ( $_, $version_for_config{$_} ) }
     qw( CPAN::Meta::Converter ),
     @always_required,
     @packages_for_perl_autoconf;
 my %requires =
-    map { ( $_, $version_for_confiG{$_} ) }
+    map { ( $_, $version_for_config{$_} ) }
     qw( HTML::Entities HTML::Parser ),
     @always_required;
 
 # my %recommends =
-    # map { ( $_, $version_for_confiG{$_} ) }
+    # map { ( $_, $version_for_config{$_} ) }
     # ( @packages_for_perl_autoconf, qw( PPI ) );
 
 my %pod_files = ();
@@ -212,46 +212,63 @@ my %pod_files = ();
         next LINE if not $pod_file =~ / [.] pod \z /xms;
         next LINE if $pod_file =~ m{ libmarpa [/] dev [/] old_pod [/] }xms;
         if ( ( my $destfile = $pod_file )
-            =~ s{ \A pod [/] }{lib/Marpa/R3/}xms )
+            =~ s{ \A pod [/] }{Marpa/R3/}xms )
         {
-            $pod_files{$pod_file} = $destfile;
+            $destfile =~ s{[/]}{-}xmsg;
+            $pod_files{$pod_file} = q{$(INST_MAN1DIR)/} . $destfile;
             next LINE;
         } ## end if ( ( my $destfile = $pod_file ) =~ ...)
         if ( ( my $destfile = $pod_file )
-            =~ s{ \A html [/] pod [/] }{lib/Marpa/R3/}xms )
+            =~ s{ \A html [/] pod [/] }{Marpa/R3/}xms )
         {
-            $pod_files{$pod_file} = $destfile;
+            $destfile =~ s{[/]}{-}xmsg;
+            $pod_files{$pod_file} = q{$(INST_MAN1DIR)/} . $destfile;
             next LINE;
         } ## end if ( ( my $destfile = $pod_file ) =~ ...)
         die "Failed to rename POD file: $pod_file";
     } ## end LINE: for my $pod_file (@pod_files)
 }
-$pod_files{'pod/Marpa_R3.pod'}  = 'lib/Marpa/R3.pod';
-$pod_files{'html/pod/HTML.pod'} = 'lib/Marpa/R3/HTML.pod';
+$pod_files{'pod/Marpa_R3.pod'}  = q{$(INST_MAN1DIR)} . '/Marpa-R3.pod';
+$pod_files{'html/pod/HTML.pod'} = q{$(INST_MAN1DIR)} . '/Marpa-R3-HTML.pod';
 
 my %pm_files = ();
 File::Find::find(
     sub {
         return if not m/[.]pm \z/xms;
-        $pm_files{$File::Find::name} = $File::Find::name;
+        my ( undef, undef, $file_name ) = File::Spec->splitpath($File::Find::name);
+        my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, qw{Marpa R3} );
+        my $dest_file = File::Spec->catfile( $dest_dir, $file_name );
+        $pm_files{$File::Find::name} = $dest_file;
     },
-    'lib'
+    'lib/Marpa/R3'
 );
 File::Find::find(
     sub {
         return if not m/[.]pm \z/xms;
         my ( $vol, $dirs, $file ) = File::Spec->splitpath($File::Find::name);
         my @dirs      = File::Spec->splitdir($dirs);
-        my $dest_dirs = File::Spec->catdir( @dirs[ 1 .. $#dirs ] );
+        my $dest_dirs = File::Spec->catdir( q{$(INST_LIB)}, @dirs[ 2 .. $#dirs ] );
         my $dest_name = File::Spec->catpath( $vol, $dest_dirs, $file );
         $pm_files{$File::Find::name} = $dest_name;
     },
     'html/lib'
 );
-for my $pm_file (qw(Version.pm Installed.pm)) {
-    my $pm_fullname = 'lib/Marpa/R3/' . $pm_file;
-    $pm_files{$pm_fullname} = $pm_fullname;
+# for my $pm_file (qw(Version.pm Installed.pm)) {
+    # my $pm_fullname = 'lib/Marpa/R3/' . $pm_file;
+    # my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, qw{Marpa R3} );
+    # my $dest_file = File::Spec->catfile( $dest_dir, $pm_file );
+    # $pm_files{$pm_fullname} =  $dest_file;
+# }
+{
+    my $filename = 'R3.pm';
+    my $from_dir = File::Spec->catdir( qw{lib Marpa } );
+    my $from_file = File::Spec->catfile( $from_dir, $filename );
+    my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, qw{Marpa} );
+    my $dest_file = File::Spec->catfile( $dest_dir, $filename );
+    $pm_files{$from_file} =  $dest_file;
 }
+
+# die Data::Dumper::Dumper(\%pm_files);
 
 my @no_index_namespace_inclusive = qw(
     Marpa::R3::HTML
@@ -375,7 +392,7 @@ WriteMakefile(
 
     $text .= '%VERSION_FOR_CONFIG = (' . "\n";
     for my $package (@use_packages) {
-        my $version = $version_for_confiG{$package};
+        my $version = $version_for_config{$package};
         die "No version defined for $package" if not defined $version;
         $text .= q{    '} . $package . q{' => '} . $version . qq{',\n};
     }
