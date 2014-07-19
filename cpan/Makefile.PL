@@ -275,47 +275,47 @@ my @files_to_cleanup = (
 );
 
 WriteMakefile(
-    clean        => { FILES => (join q{ }, @files_to_cleanup) },
-        NAME     => 'Marpa::R3',
-        AUTHOR   => 'Jeffrey Kegler',
-        ABSTRACT => 'Release 3 of Marpa',
+    clean    => { FILES => ( join q{ }, @files_to_cleanup ) },
+    NAME     => 'Marpa::R3',
+    AUTHOR   => 'Jeffrey Kegler',
+    ABSTRACT => 'Release 3 of Marpa',
 
-        # INC => '-Iinc',
-
-        # recommends         => \%recommends,
-        PREREQ_PM          => \%requires,
-        CONFIGURE_REQUIRES => \%configure_requires,
-        PM                 => \%pm_files,
-        EXE_FILES           => [
+    # recommends         => \%recommends,
+    PREREQ_PM          => \%requires,
+    CONFIGURE_REQUIRES => \%configure_requires,
+    PM                 => \%pm_files,
+    EXE_FILES          => [
         'html/script/marpa_r3_html_fmt',
         'html/script/marpa_r3_html_score',
-        ],
-        XS       => { 'xs/R3.xs' => 'lib/Marpa/R3.xs' },
-        META_ADD => {
-            no_index => {
-                directory => [
-                    qw( pperl tool libmarpa author.t
-                        html/etc html/sandbox html/script html/t
-                        )
-                ],
-                namespace => [
-                    'Marpa::R3::Recognizer', 'Marpa::R3::Grammar',
-                    @no_index_namespace_inclusive
-                ],
-                package => [
-                    @no_index_namespace_inclusive, 'Marpa::R3::Thin::Trace'
-                ],
-            }
-            },
-        META_MERGE => { resources =>
+    ],
+    XS       => { 'xs/R3.xs' => 'lib/Marpa/R3.xs' },
+    META_ADD => {
+        no_index => {
+            directory => [
+                qw( pperl tool libmarpa author.t
+                    html/etc html/sandbox html/script html/t
+                    )
+            ],
+            namespace => [
+                'Marpa::R3::Recognizer', 'Marpa::R3::Grammar',
+                @no_index_namespace_inclusive
+            ],
+            package =>
+                [ @no_index_namespace_inclusive, 'Marpa::R3::Thin::Trace' ],
+        }
+    },
+    META_MERGE => {
+        resources =>
             { repository => 'git://github.com/jeffreykegler/Marpa--R3.git', },
-        },
-        NO_META => 1,
-        MAN1PODS => \%pod_files,
-        LICENSE  => 'lgpl3',
+    },
+    NO_META  => 1,
+    MAN1PODS => \%pod_files,
+    LICENSE  => 'lgpl3',
+    NOECHO => q{},
 
-    test => { TESTS => "t/*.t html/t/*.t" }
-    # getoptions => { Dev => {}, 'Marpa-debug' => {} },
+    test => { RECURSIVE_TEST_FILES => 1 }
+
+        # getoptions => { Dev => {}, 'Marpa-debug' => {} },
 );
 
 {
