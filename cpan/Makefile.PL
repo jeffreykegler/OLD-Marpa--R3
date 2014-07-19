@@ -235,9 +235,11 @@ my %pm_files = ();
 File::Find::find(
     sub {
         return if not m/[.]pm \z/xms;
-        my ( undef, undef, $file_name ) = File::Spec->splitpath($File::Find::name);
-        my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, qw{Marpa R3} );
-        my $dest_file = File::Spec->catfile( $dest_dir, $file_name );
+        my ( $vol, $dirs, $file_name ) = File::Spec->splitpath($File::Find::name);
+        my @dirs      = File::Spec->splitdir($dirs);
+        shift @dirs; # shift off the lib component
+        my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, @dirs );
+        my $dest_file = File::Spec->catpath( $vol, $dest_dir, $file_name );
         $pm_files{$File::Find::name} = $dest_file;
     },
     'lib/Marpa/R3'
@@ -247,18 +249,13 @@ File::Find::find(
         return if not m/[.]pm \z/xms;
         my ( $vol, $dirs, $file ) = File::Spec->splitpath($File::Find::name);
         my @dirs      = File::Spec->splitdir($dirs);
-        my $dest_dirs = File::Spec->catdir( q{$(INST_LIB)}, @dirs[ 2 .. $#dirs ] );
+        shift @dirs, shift @dirs; # shift off the html/lib components
+        my $dest_dirs = File::Spec->catdir( q{$(INST_LIB)}, @dirs );
         my $dest_name = File::Spec->catpath( $vol, $dest_dirs, $file );
         $pm_files{$File::Find::name} = $dest_name;
     },
     'html/lib'
 );
-# for my $pm_file (qw(Version.pm Installed.pm)) {
-    # my $pm_fullname = 'lib/Marpa/R3/' . $pm_file;
-    # my $dest_dir = File::Spec->catdir( q{$(INST_LIB)}, qw{Marpa R3} );
-    # my $dest_file = File::Spec->catfile( $dest_dir, $pm_file );
-    # $pm_files{$pm_fullname} =  $dest_file;
-# }
 {
     my $filename = 'R3.pm';
     my $from_dir = File::Spec->catdir( qw{lib Marpa } );
@@ -301,11 +298,11 @@ WriteMakefile(
     PREREQ_PM          => \%requires,
     CONFIGURE_REQUIRES => \%configure_requires,
     PM                 => \%pm_files,
+    OBJECT => 'xs/R3.o',
     EXE_FILES          => [
         'html/script/marpa_r3_html_fmt',
         'html/script/marpa_r3_html_score',
     ],
-    XS       => { 'xs/R3.xs' => 'lib/Marpa/R3.xs' },
     META_ADD => {
         no_index => {
             directory => [
@@ -328,6 +325,7 @@ WriteMakefile(
     NO_META  => 1,
     MAN1PODS => \%pod_files,
     LICENSE  => 'lgpl3',
+    MYEXTLIB => 'libmarpa_build/.libs/libmarpa.a',
     NOECHO => q{},
 
     test => { RECURSIVE_TEST_FILES => 1 }
@@ -402,5 +400,22 @@ WriteMakefile(
     file_write( $text, qw(html tool lib Marpa R3 HTML Test Version.pm ) );
 
 }
+
+
+sub MY::postamble {
+               return <<'END_OF_POSTAMBLE';
+xs/R3.c: xs/R3.xs
+	$(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) xs/R3.xs > xs/R3.xsc && $(MV)  xs/R3.xsc xs/R3.c
+
+xs/R3.o: xs/R3.c
+	$(CC) -c $(PASTHRU_INC) -Ilibmarpa_build -Ixs \
+	  $(CCFLAGS) $(OPTIMIZE) \
+	  $(PERLTYPE) $(MPOLLUTE) \
+	  $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) \
+          -o xs/R3.o xs/R3.c
+
+END_OF_POSTAMBLE
+}
+
 
 # vim: expandtab shiftwidth=4:
