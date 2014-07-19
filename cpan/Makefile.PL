@@ -325,7 +325,7 @@ WriteMakefile(
     NO_META  => 1,
     MAN1PODS => \%pod_files,
     LICENSE  => 'lgpl3',
-    MYEXTLIB => 'libmarpa_build/.libs/libmarpa.a',
+    MYEXTLIB => 'libmarpa_build/.libs/libmarpa$(LIB_EXT)',
     NOECHO => q{},
 
     test => { RECURSIVE_TEST_FILES => 1 }
