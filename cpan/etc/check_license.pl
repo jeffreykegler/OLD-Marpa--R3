@@ -29,8 +29,19 @@ use lib 'inc';
 use Marpa::R3::License;
 
 my $file_count = @ARGV;
-my @license_problems =
-    map { Marpa::R3::License::file_license_problems( $_, $verbose ) } @ARGV;
+my @license_problems;
+if ($file_count) {
+    @license_problems =
+        map { Marpa::R3::License::file_license_problems( $_, $verbose ) }
+        @ARGV;
+}
+else {
+    require ExtUtils::Manifest;
+    my @manifest = keys %{ ExtUtils::Manifest::maniread() };
+    $file_count = scalar @manifest;
+    my @license_problems =
+        Marpa::R3::License::license_problems( \@manifest, $verbose );
+} ## end else [ if ($file_count) ]
 
 print join "\n", @license_problems;
 

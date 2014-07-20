@@ -1,14 +1,14 @@
 /blib/
-/blib_shared/
 /_build/
 /Build
+/core/gnu_ac_build
+/core/perl_ac_build
 dovg.log
 [.]DS_Store
 errs
 .gdb_history
 /hide/
 junk
-/libmarpa_build/
 /Makefile
 /Marpa-R3-[0-9].[0-9][0-9][0-9]_[0-9][0-9][0-9]/
 /Marpa-R3-[0-9].[0-9][0-9][0-9][0-9][0-9][0-9]/

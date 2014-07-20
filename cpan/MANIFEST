@@ -280,7 +280,7 @@ t/thin_deprec.t
 t/thin_eq.t
 t/timeflies.t
 t/use.t
-typemap
+xs/typemap
 xs/.gitignore
 xs/Makefile
 xs/R3.xs

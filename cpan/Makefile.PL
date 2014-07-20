@@ -310,11 +310,10 @@ my @no_index_namespace_inclusive = qw(
 );
 
 my @files_to_cleanup = (
-    'lib/Marpa/R3/Version.pm',
-    'pperl/Marpa/R3/Perl/Version.pm',
-    'html/lib/Marpa/R3/Test/Version.pm',
-    'lib/Marpa/R3/Installed.pm', 'pperl/Marpa/R3/Perl/Installed.pm',
-    'lib/Marpa/R3.o',            'libmarpa_build'
+    'lib/Marpa/R3/Version.pm',           'pperl/Marpa/R3/Perl/Version.pm',
+    'html/lib/Marpa/R3/Test/Version.pm', 'lib/Marpa/R3/Installed.pm',
+    'pperl/Marpa/R3/Perl/Installed.pm',  'lib/Marpa/R3.o',
+    'core/gnu_ac_build',                 'core/perl_ac_build',
 );
 
 WriteMakefile(
