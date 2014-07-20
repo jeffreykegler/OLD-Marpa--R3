@@ -260,6 +260,49 @@ my %pod_files = ();
 $pod_files{'pod/Marpa_R3.pod'}  = q{$(INST_MAN1DIR)} . '/Marpa-R3.pod';
 $pod_files{'html/pod/HTML.pod'} = q{$(INST_MAN1DIR)} . '/Marpa-R3-HTML.pod';
 
+{
+    my @r3_perl_components = qw(pperl Marpa R3 Perl);
+    my @r3_components      = qw(lib Marpa R3);
+    my $config_pm_filename = File::Spec->catfile(qw(inc Marpa R3 Config.pm ));
+    my @derived_files      = (
+        File::Spec->catfile( @r3_components,      'Version.pm' ),
+        File::Spec->catfile( @r3_components,      'Installed.pm' ),
+        File::Spec->catfile( @r3_perl_components, 'Version.pm' ),
+        File::Spec->catfile( @r3_perl_components, 'Installed.pm' ),
+    );
+    say {*STDERR} 'Writing version files' or die "say failed: $ERRNO";
+    write_installed_pm(qw(lib Marpa R3 ));
+    write_installed_pm(qw(pperl Marpa R3 Perl ));
+    my $perl_version_pm = perl_version_contents('Marpa::R3::Perl');
+    my $version_pm      = xs_version_contents('Marpa::R3');
+    file_write( $version_pm,      qw(lib Marpa R3 Version.pm) );
+    file_write( $perl_version_pm, qw(pperl Marpa R3 Perl Version.pm) );
+
+}
+
+{
+    my @use_packages = qw( HTML::Entities HTML::Parser);
+    my $text         = $preamble;
+    $text .= "package Marpa::R3::HTML::Test;\n";
+
+##no critic(ValuesAndExpressions::RequireInterpolationOfMetachars)
+    $text .= q{use vars qw($TIMESTAMP %VERSION_FOR_CONFIG)} . qq{;\n};
+    $text .= q{$TIMESTAMP='} . localtime()->datetime . qq{';\n};
+##use critic
+
+    $text .= '%VERSION_FOR_CONFIG = (' . "\n";
+    for my $package (@use_packages) {
+        my $version = $version_for_config{$package};
+        die "No version defined for $package" if not defined $version;
+        $text .= q{    '} . $package . q{' => '} . $version . qq{',\n};
+    }
+    $text .= ');' . "\n\n";
+    $text .= "1;\n";
+
+    file_write( $text, qw(html tool lib Marpa R3 HTML Test Version.pm ) );
+
+}
+
 my %pm_files = ();
 File::Find::find(
     sub {
@@ -319,6 +362,7 @@ my @files_to_cleanup = (
 WriteMakefile(
     clean    => { FILES => ( join q{ }, @files_to_cleanup ) },
     NAME     => 'Marpa::R3',
+    VERSION => $STRING_VERSION,
     AUTHOR   => 'Jeffrey Kegler',
     ABSTRACT => 'Release 3 of Marpa',
 
@@ -360,49 +404,6 @@ WriteMakefile(
 
         # getoptions => { Dev => {}, 'Marpa-debug' => {} },
 );
-
-{
-    my @r3_perl_components = qw(pperl Marpa R3 Perl);
-    my @r3_components      = qw(lib Marpa R3);
-    my $config_pm_filename = File::Spec->catfile(qw(inc Marpa R3 Config.pm ));
-    my @derived_files      = (
-        File::Spec->catfile( @r3_components,      'Version.pm' ),
-        File::Spec->catfile( @r3_components,      'Installed.pm' ),
-        File::Spec->catfile( @r3_perl_components, 'Version.pm' ),
-        File::Spec->catfile( @r3_perl_components, 'Installed.pm' ),
-    );
-    say {*STDERR} 'Writing version files' or die "say failed: $ERRNO";
-    write_installed_pm(qw(lib Marpa R3 ));
-    write_installed_pm(qw(pperl Marpa R3 Perl ));
-    my $perl_version_pm = perl_version_contents('Marpa::R3::Perl');
-    my $version_pm      = xs_version_contents('Marpa::R3');
-    file_write( $version_pm,      qw(lib Marpa R3 Version.pm) );
-    file_write( $perl_version_pm, qw(pperl Marpa R3 Perl Version.pm) );
-
-}
-
-{
-    my @use_packages = qw( HTML::Entities HTML::Parser);
-    my $text         = $preamble;
-    $text .= "package Marpa::R3::HTML::Test;\n";
-
-##no critic(ValuesAndExpressions::RequireInterpolationOfMetachars)
-    $text .= q{use vars qw($TIMESTAMP %VERSION_FOR_CONFIG)} . qq{;\n};
-    $text .= q{$TIMESTAMP='} . localtime()->datetime . qq{';\n};
-##use critic
-
-    $text .= '%VERSION_FOR_CONFIG = (' . "\n";
-    for my $package (@use_packages) {
-        my $version = $version_for_config{$package};
-        die "No version defined for $package" if not defined $version;
-        $text .= q{    '} . $package . q{' => '} . $version . qq{',\n};
-    }
-    $text .= ');' . "\n\n";
-    $text .= "1;\n";
-
-    file_write( $text, qw(html tool lib Marpa R3 HTML Test Version.pm ) );
-
-}
 
 my @debug_flags            = ();
 my @configure_command_args = ();
@@ -576,12 +577,18 @@ else {
 chdir $cwd;
 
 sub MY::postamble {
-    my $postamble = <<'END_OF_POSTAMBLE';
+    my $postamble = (
+        $use_perl_autoconf
+        ? "LIBMARPA_BUILD_DIR = core/perl_ac_build\n"
+        : "LIBMARPA_BUILD_DIR = core/gnu_ac_build\n"
+    );
+
+    $postamble .= <<'END_OF_POSTAMBLE';
 xs/R3.c: xs/R3.xs
 	$(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) xs/R3.xs > xs/R3.xsc && $(MV)  xs/R3.xsc xs/R3.c
 
 xs/R3.o: xs/R3.c
-	$(CC) -c $(PASTHRU_INC) -Ilibmarpa_build -Ixs \
+	$(CC) -c $(PASTHRU_INC) -I$(LIBMARPA_BUILD_DIR) -Ixs \
 	  $(CCFLAGS) $(OPTIMIZE) \
 	  $(PERLTYPE) $(MPOLLUTE) \
 	  $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) \
@@ -610,14 +617,14 @@ $(MYEXTLIB): core/perl_ac_build/blib/arch/auto/libmarpa/libmarpa$(LIB_EXT)
 	cp $? $@
 
 EOT
-    } ## end if ($use_perl_autconf)
+    } ## end if ($use_perl_autoconf)
     else {
         $postamble .= <<'EOT';
 $(MYEXTLIB): core/gnu_ac_build/.libs/libmarpa$(LIB_EXT)
 	cp $? $@
 
 EOT
-    } ## end else [ if ($use_perl_autconf) ]
+    } ## end else [ if ($use_perl_autoconf) ]
 
     return $postamble;
 } ## end sub MY::postamble
