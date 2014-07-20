@@ -46,6 +46,7 @@ core/LOG_DATA
 core/README
 core/SHARED
 core/STATIC
+core/cf/write_makefile.pl
 core/read_only/AUTHORS
 core/read_only/COPYING.LESSER
 core/read_only/ChangeLog
