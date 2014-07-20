@@ -28,6 +28,21 @@
 
 # LC_ALL=C sort
 /[.]gdb_history$
+pm_to_blib$
+^html/tool/lib/Marpa/R3/HTML/Test/Version[.]pm$
+^t/zhtml/00-load.t
+^t/zhtml/cfg_fmt.t
+^t/zhtml/config.t
+^t/zhtml/copy.t
+^t/zhtml/examples.t
+^t/zhtml/fmt.t
+^t/zhtml/missing.t
+^t/zhtml/parse.t
+^t/zhtml/score.t
+^t/zhtml/synopsis.t
+^t/zhtml/tang.t
+xs/libmarpa.a
+xs/R3.c
 /[.]gitignore$
 /errs$
 /junk$
@@ -64,6 +79,8 @@
 ^blib/
 ^blib_shared/
 ^core/cf/LIBMARPA_MODE$
+^core/gnu_ac_build/
+^core/perl_ac_build/
 ^core/stage/
 ^dovg[.]log$
 ^errs$

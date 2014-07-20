@@ -18,40 +18,38 @@
 dummy: 
 
 releng: install full_test
-	cd cpan && ./Build distcheck
-	cd cpan && ./Build dist
+	cd cpan && make distcheck
+	cd cpan && make dist
 	git status
 
 basic_test:
-	(cd cpan && ./Build test) 2>&1 | tee basic_test.out
+	(cd cpan && make test) 2>&1 | tee basic_test.out
 
 rebuild: etc_make
 	(cd cpan; \
-	    ./Build; \
-	    ./Build test; \
+	    make; \
+	    make test; \
 	) 2>&1 | tee rebuild.out
 
 single_test: etc_make
 	(cd cpan; \
-	    ./Build; \
-	    ./Build test --test_files $(TEST); \
+	    make; \
+	    make test --test_files $(TEST); \
 	) 2>&1 | tee single_test.out
 
 full_test: etc_make
 	(cd cpan; \
-	    ./Build realclean; \
-	    perl Build.PL; \
-	    ./Build; \
-	    ./Build distmeta; \
-	    ./Build test; \
-	    ./Build disttest; \
-	    MARPA_USE_PERL_AUTOCONF=1 ./Build disttest; \
+	    make realclean; \
+	    perl Makefile.PL; \
+	    make; \
+	    make test; \
+	    make disttest; \
+	    MARPA_USE_PERL_AUTOCONF=1 make disttest; \
 	) 2>&1 | tee full_test.out
 
 install:
 	(cd cpan/meta && make all)
 	(cd cpan/xs && make)
-	(cd cpan && perl Build.PL)
-	(cd cpan && ./Build distmeta)
-	(cd cpan && ./Build code)
+	(cd cpan && perl Makefile.PL)
+	(cd cpan && make)
 
