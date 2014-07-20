@@ -17,12 +17,14 @@
 use 5.010;
 use strict;
 use warnings;
+use ExtUtils::Install;
 use Fatal qw(open close mkdir chdir);
 use File::Spec 0.82;
 use File::Find 1.12;
 use IPC::Cmd;
 use English qw( -no_match_vars );
 use Time::Piece 1.12;
+use Cwd;
 
 use Config;
 use ExtUtils::MakeMaker;
@@ -33,6 +35,9 @@ $STRING_VERSION = $VERSION;
 ## no critic (BuiltinFunctions::ProhibitStringyEval)
 $VERSION = eval $VERSION;
 ## use critic
+
+my $verbose = 1;
+my $libmarpa_debug = 0;
 
 my %perl_autoconf_os =
     map { $_ => 1 } qw( MSWin32 openbsd solaris sunos midnightbsd );
@@ -325,7 +330,7 @@ WriteMakefile(
     NO_META  => 1,
     MAN1PODS => \%pod_files,
     LICENSE  => 'lgpl3',
-    MYEXTLIB => 'libmarpa_build/.libs/libmarpa$(LIB_EXT)',
+    MYEXTLIB => 'xs/libmarpa$(LIB_EXT)',
     NOECHO => q{},
 
     test => { RECURSIVE_TEST_FILES => 1 }
@@ -401,6 +406,57 @@ WriteMakefile(
 
 }
 
+if ($use_perl_autoconf) {
+    my $from_dir = File::Spec->catdir(qw(core read_only));
+    my $build_dir   = File::Spec->catdir(qw(core perl_ac_build));
+    ExtUtils::Install::install(
+        [ from_to => { $from_dir => $build_dir }, verbose => 1 ] );
+    my $stamp_file = File::Spec->catfile( $build_dir, 'stamp-h1' );
+    File::Path::rmtree( $stamp_file, 0, 0 );
+    die "Use of Config::Autoconf not yet implemented";
+} ## end if ($use_perl_autoconf)
+else {
+    my $from_dir = File::Spec->catdir(qw(core read_only));
+    my $build_dir   = File::Spec->catdir(qw(core gnu_ac_build));
+    ExtUtils::Install::install(
+        [ from_to => { $from_dir => $build_dir }, verbose => 1 ] );
+    my $stamp_file = File::Spec->catfile( $build_dir, 'stamp-h1' );
+    File::Path::rmtree( $stamp_file, 0, 0 );
+
+    my @debug_flags = ();
+    my @configure_command_args = ();
+    if ($libmarpa_debug) {
+        if ( defined $ENV{LIBMARPA_CFLAGS} ) {
+            $ENV{CFLAGS} = $ENV{LIBMARPA_CFLAGS};
+        }
+        push @debug_flags, '-DMARPA_DEBUG=1';
+        push @debug_flags, '-fno-inline', '-Wno-inline'
+            if ( $Config{'cc'} eq 'gcc' );
+        push @configure_command_args,
+            'MARPA_DEBUG_FLAG=' . ( join q{ }, @debug_flags );
+    } ## end if ($libmarpa_debug)
+
+    my $shell            = $Config{sh};
+    my $configure_script = 'configure';
+    if ($verbose) {
+        say join q{ }, "Running command:", $shell, $configure_script,
+            @configure_command_args
+            or die "print failed: $ERRNO";
+    }
+    my $cwd = Cwd::getcwd();
+    chdir $build_dir;
+    if (not IPC::Cmd::run(
+            command => [ $shell, $configure_script, @configure_command_args ],
+            verbose => 1
+        )
+        )
+    {
+        die "Failed: $configure_script\n",
+         "Current directory: $build_dir\n",
+        'Cannot run libmarpa configure';
+    } ## end if ( not IPC::Cmd::run( command => [ $shell, $configure_script...]))
+    chdir $cwd;
+} ## end else [ if ($use_perl_autoconf) ]
 
 sub MY::postamble {
                return <<'END_OF_POSTAMBLE';
@@ -413,6 +469,21 @@ xs/R3.o: xs/R3.c
 	  $(PERLTYPE) $(MPOLLUTE) \
 	  $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) \
           -o xs/R3.o xs/R3.c
+
+# The touch's in the following target
+# are necessary for GNU autoconf, which is aggressive
+# about looking for things to update
+# This might be accomplished more easily by adding
+# AM_MAINTAINER_MODe([disable]) to configure.ac
+
+core/gnu_ac_build/.libs/libmarpa$(LIB_EXT): core/read_only/stamp-h1
+	$(TOUCH) core/gnu_ac_build/aclocal.m4
+	$(TOUCH) core/gnu_ac_build/configure
+	$(TOUCH) core/gnu_ac_build/config.h.in
+	cd core/gnu_ac_build; make
+
+$(MYEXTLIB): core/gnu_ac_build/.libs/libmarpa$(LIB_EXT)
+	cp $? $@
 
 END_OF_POSTAMBLE
 }
