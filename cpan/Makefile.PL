@@ -30,7 +30,7 @@ use Config;
 use ExtUtils::MakeMaker;
 
 use vars qw($VERSION $STRING_VERSION);
-$VERSION        = '3.003_000';
+$VERSION        = '3.003_001';
 $STRING_VERSION = $VERSION;
 ## no critic (BuiltinFunctions::ProhibitStringyEval)
 $VERSION = eval $VERSION;
@@ -606,7 +606,7 @@ core/gnu_ac_build/.libs/libmarpa$(LIB_EXT): core/read_only/stamp-h1
 	$(TOUCH) core/gnu_ac_build/config.h.in
 	cd core/gnu_ac_build; make
 
-core/perl_ac_build/.libs/libmarpa$(LIB_EXT): core/read_only/stamp-h1
+core/perl_ac_build/blib/arch/auto/libmarpa/libmarpa$(LIB_EXT): core/read_only/stamp-h1
 	cd core/perl_ac_build; make
 
 END_OF_POSTAMBLE
