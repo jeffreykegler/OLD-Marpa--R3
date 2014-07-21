@@ -406,11 +406,12 @@ WriteMakefile(
 
     test => { RECURSIVE_TEST_FILES => 1 }
 
-        # getoptions => { Dev => {}, 'Marpa-debug' => {} },
 );
 
 my @debug_flags            = ();
 my @configure_command_args = ();
+push @configure_command_args, qw(--with-pic --disable-shared);
+
 if ($libmarpa_debug) {
     if ( defined $ENV{LIBMARPA_CFLAGS} ) {
         $ENV{CFLAGS} = $ENV{LIBMARPA_CFLAGS};
