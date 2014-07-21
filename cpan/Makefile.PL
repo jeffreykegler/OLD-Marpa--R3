@@ -612,9 +612,9 @@ xs/R3.o: xs/R3.c
 # AM_MAINTAINER_MODe([disable]) to configure.ac
 
 kollos/gnu_ac_build/.libs/libmarpa$(LIB_EXT): kollos/read_only/stamp-h1
-	$(TOUCH) kollos/gnu_ac_build/aclocal.m4
-	$(TOUCH) kollos/gnu_ac_build/configure
-	$(TOUCH) kollos/gnu_ac_build/config.h.in
+	-$(TOUCH) kollos/gnu_ac_build/aclocal.m4
+	-$(TOUCH) kollos/gnu_ac_build/configure
+	-$(TOUCH) kollos/gnu_ac_build/config.h.in
 	cd kollos/gnu_ac_build && $(MAKE)
 
 kollos/perl_ac_build/libmarpa$(LIB_EXT): kollos/read_only/stamp-h1
