@@ -597,7 +597,7 @@ sub top_postamble {
 
     $postamble .= <<'END_OF_POSTAMBLE';
 xs/R3.c: xs/R3.xs
-	$(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) xs/R3.xs > xs/R3.xsc && $(MV)  xs/R3.xsc xs/R3.c
+	cd xs; $(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) R3.xs > R3.xsc && $(MV) R3.xsc R3.c
 
 xs/R3.o: xs/R3.c
 	$(CC) -c $(PASTHRU_INC) -I$(LIBMARPA_BUILD_DIR) -Ixs \

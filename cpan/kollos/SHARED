@@ -13,6 +13,9 @@
 # General Public License along with Marpa::R3.  If not, see
 # http://www.gnu.org/licenses/.
 
+THIS DOCUMENT HAS NOT BEEN REVISED FOR MARPA::R3 YET.  THE DIRECTIONS
+IN IT DO NOT WORK.
+
 This document describes how to link an external shared library with
 Marpa::R3.  This method, and this document, are intended for re-packagers
 and other very advanced users.  This method is not supported by the CPAN

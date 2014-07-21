@@ -1,8 +1,6 @@
 /blib/
 /_build/
 /Build
-/core/gnu_ac_build
-/core/perl_ac_build
 dovg.log
 [.]DS_Store
 errs

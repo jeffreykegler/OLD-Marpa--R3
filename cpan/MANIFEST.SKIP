@@ -78,10 +78,9 @@ xs/R3.c
 ^author.t/tidy.errs$
 ^blib/
 ^blib_shared/
-^core/cf/LIBMARPA_MODE$
-^core/gnu_ac_build/
-^core/perl_ac_build/
-^core/stage/
+^kollos/cf/LIBMARPA_MODE$
+^kollos/gnu_ac_build/
+^kollos/perl_ac_build/
 ^dovg[.]log$
 ^errs$
 ^etc/track[.]list
