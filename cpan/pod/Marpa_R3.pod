@@ -15,7 +15,7 @@
 
 =head1 NAME
 
-Marpa::R3 - Release 2 of Marpa
+Marpa::R3 - Release 3 of Marpa (EXPERIMENTAL)
 
 =head1 Synopsis
 
@@ -62,6 +62,14 @@ normalize-whitespace: 1
     }
 
 =for Marpa::R3::Display::End
+
+=head1 THIS RELEASE IS EXPERIMENTAL
+
+The new release of Marpa is in the experimental phase.
+At the moment, aggressive development is emphasized,
+and end-user support is not.
+Expect frequent interface changes,
+as well as new bugs.
 
 =head1 Description
 
