@@ -615,10 +615,10 @@ core/gnu_ac_build/.libs/libmarpa$(LIB_EXT): core/read_only/stamp-h1
 	$(TOUCH) core/gnu_ac_build/aclocal.m4
 	$(TOUCH) core/gnu_ac_build/configure
 	$(TOUCH) core/gnu_ac_build/config.h.in
-	cd core/gnu_ac_build; make
+	cd core/gnu_ac_build && $(MAKE)
 
 core/perl_ac_build/libmarpa$(LIB_EXT): core/read_only/stamp-h1
-	cd core/perl_ac_build; make
+	cd core/perl_ac_build && $(MAKE)
 
 END_OF_POSTAMBLE
 
