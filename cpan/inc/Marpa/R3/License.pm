@@ -149,7 +149,7 @@ END_OF_STRING
 my %GNU_file = (
     map {
     (
-        'core/read_only/' . $_,   1,
+        'kollos/read_only/' . $_,   1,
         )
     } qw(
         aclocal.m4
@@ -283,36 +283,36 @@ my %files_by_type = (
     'html/t/fmt_t_data/score_expected2.html' => \&trivial,
     'html/t/no_tang.html'                    => \&ignored,
     'html/t/test.html'                       => \&ignored,
-    'core/LOG_DATA'             => \&trivial,
-'core/cf/LIBMARPA_MODE' => \&trivial,
-    'core/read_only/LIB_VERSION'             => \&trivial,
-    'core/read_only/LIB_VERSION.in'          => \&trivial,
-    'core/read_only/Makefile.am' =>
+    'kollos/LOG_DATA'             => \&trivial,
+'kollos/cf/LIBMARPA_MODE' => \&trivial,
+    'kollos/read_only/LIB_VERSION'             => \&trivial,
+    'kollos/read_only/LIB_VERSION.in'          => \&trivial,
+    'kollos/read_only/Makefile.am' =>
         gen_license_problems_in_hash_file($libmarpa_hash_license),
-    'core/read_only/configure.ac' =>
+    'kollos/read_only/configure.ac' =>
         gen_license_problems_in_hash_file($libmarpa_hash_license),
-    'core/read_only/notes/shared_test.txt' =>
+    'kollos/read_only/notes/shared_test.txt' =>
         gen_license_problems_in_hash_file($libmarpa_hash_license),
-    'core/read_only/Makefile.win32' =>
+    'kollos/read_only/Makefile.win32' =>
         gen_license_problems_in_hash_file($libmarpa_hash_license),
-    'core/read_only/win32/do_config_h.pl' =>
+    'kollos/read_only/win32/do_config_h.pl' =>
         gen_license_problems_in_perl_file($libmarpa_hash_license),
     'etc/my_suppressions' => \&trivial,
     'xs/ppport.h' => \&ignored,    # copied from CPAN, just leave it alone
-    'core/read_only/README.INSTALL' =>
+    'kollos/read_only/README.INSTALL' =>
         gen_license_problems_in_text_file($libmarpa_hash_license),
 
     # Leave Pfaff's licensing as is
-    'core/read_only/marpa_tavl.c' => \&ignored,
-    'core/read_only/marpa_tavl.h' => \&ignored,
+    'kollos/read_only/marpa_tavl.c' => \&ignored,
+    'kollos/read_only/marpa_tavl.h' => \&ignored,
 
     # MS .def file -- contents trivial
-    'core/read_only/win32/marpa.def' => \&ignored,
+    'kollos/read_only/win32/marpa.def' => \&ignored,
 );
 
 # Common files in the GNU distributions
 for my $distlib (
-    qw(core/read_only)
+    qw(kollos/read_only)
     )
 {
     $files_by_type{"$distlib/AUTHORS"}   = \&trivial;
