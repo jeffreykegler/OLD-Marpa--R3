@@ -360,10 +360,6 @@ my @files_to_cleanup = (
     'kollos/gnu_ac_build',                 'kollos/perl_ac_build',
 );
 
-{ no strict 'refs';
-*{'MY::postamble'} = \&top_postamble;
-}
-
 WriteMakefile(
     clean    => { FILES => ( join q{ }, @files_to_cleanup ) },
     NAME     => 'Marpa::R3',
@@ -375,7 +371,8 @@ WriteMakefile(
     PREREQ_PM          => \%requires,
     CONFIGURE_REQUIRES => \%configure_requires,
     PM                 => \%pm_files,
-    OBJECT => 'xs/R3.o',
+    # OBJECT => 'xs/R3.o',
+    DIR => ['xs'],
     EXE_FILES          => [
         'html/script/marpa_r3_html_fmt',
         'html/script/marpa_r3_html_score',
@@ -402,7 +399,7 @@ WriteMakefile(
     NO_META  => 1,
     MAN1PODS => \%pod_files,
     LICENSE  => 'lgpl3',
-    MYEXTLIB => 'xs/libmarpa$(LIB_EXT)',
+    MYEXTLIB => 'xs/R3.o xs/libmarpa$(LIB_EXT)',
 
     test => { RECURSIVE_TEST_FILES => 1 }
 
@@ -587,7 +584,7 @@ else {
 
 chdir $cwd;
 
-sub top_postamble {
+sub MY::postamble {
     my $postamble = (
         $use_perl_autoconf
         ? "LIBMARPA_BUILD_DIR = kollos/perl_ac_build\n"
@@ -595,15 +592,6 @@ sub top_postamble {
     );
 
     $postamble .= <<'END_OF_POSTAMBLE';
-xs/R3.c: xs/R3.xs
-	cd xs; $(XSUBPPRUN) $(XSPROTOARG) $(XSUBPPARGS) $(XSUBPP_EXTRA_ARGS) R3.xs > R3.xsc && $(MV) R3.xsc R3.c
-
-xs/R3.o: xs/R3.c
-	$(CC) -c $(PASTHRU_INC) -I$(LIBMARPA_BUILD_DIR) -Ixs \
-	  $(CCFLAGS) $(OPTIMIZE) \
-	  $(PERLTYPE) $(MPOLLUTE) \
-	  $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) \
-          -o xs/R3.o xs/R3.c
 
 # The touch's in the following target
 # are necessary for GNU autoconf, which is aggressive

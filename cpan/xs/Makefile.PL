@@ -23,6 +23,13 @@
 
 use ExtUtils::MakeMaker;
 
+use vars qw($VERSION $STRING_VERSION);
+$VERSION        = '3.003_002';
+$STRING_VERSION = $VERSION;
+## no critic (BuiltinFunctions::ProhibitStringyEval)
+$VERSION = eval $VERSION;
+## use critic
+
 my $define = q{};
 $define .= ' -DWIN32 -DPERL_STATIC_SYMS' if ($^O eq 'MSWin32');
 
@@ -32,10 +39,11 @@ $o_files =~ s/[.]c/.o/xmsg;
 
 WriteMakefile(
     INC => '-I.',
-    NAME      => 'marpa', # (doesn't matter what the name is here) oh yes it does
+    NAME      => 'Marpa::R3',
+    VERSION => $STRING_VERSION,
 #    LINKTYPE  => 'static',
     DEFINE    => $define,
-    SKIP      => [qw(dynamic dynamic_lib dlsyms)],
+    SKIP      => [qw(test dynamic dynamic_lib dlsyms)],
     XS => { 'R3.xs' => 'R3.c' },
     OBJECT => 'R3.o',
     # clean     => {'FILES' => 'libmarpa.a'},
