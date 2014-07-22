@@ -49,7 +49,7 @@ full_test: etc_make
 
 install:
 	(cd cpan/meta && make all)
-	(cd cpan/xs && make)
+	(cd cpan/xs && make -f meta_make)
 	(cd cpan && perl Makefile.PL)
 	(cd cpan && make)
 
