@@ -26,7 +26,7 @@ Here are the steps:
 
 1.) Be sure the library that you are building is a match to the one
 that Marpa::R3 expects.  The expected version can be found in the
-kollos/read_only/LIB_VERSION file.  Do *NOT* edit this file.  This version
+engine/read_only/LIB_VERSION file.  Do *NOT* edit this file.  This version
 number must match exactly the version number of your external static
 library.
 

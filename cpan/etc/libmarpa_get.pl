@@ -21,12 +21,10 @@ use autodie;
 use IPC::Cmd;
 use File::Path;
 
-die "NOT YET UPDATED for Marpa::R3!!!";
-
 my $libmarpa_repo = 'git@github.com:jeffreykegler/libmarpa.git';
-my $stage = 'kollos/stage';
+my $stage = 'engine/stage';
 
-die "kollos/stage already exists" if -e $stage;
+die "engine/stage already exists" if -e $stage;
 die "libmarpa_build already exists" if -e 'libmarpa_build';
 
 if (not IPC::Cmd::run(
