@@ -1,3 +1,6 @@
+marpa[.]h
+marpa_slif[.]h
+ppport.h
 general_pattern.xsh
 Makefile
 libmarpa[.]a
